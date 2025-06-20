@@ -1,9 +1,15 @@
 # template-react-vite-tailwind
 
-This is a Vite app containing:
+This is a minimal Solana dApp template containing:
 
-- Tailwind CSS setup for styling
-- Useful wallet UI elements setup using [Gill](https://gill.site/)
+- Simple "Welcome to Solana" landing page
+- Wallet connection functionality
+- Cluster selection (Mainnet/Devnet)
+- Dark/Light theme toggle
+- Tailwind CSS for styling
+- Essential Solana integration using [Gill](https://gill.site/)
+
+Perfect for LLMs to build upon without confusion from complex features.
 
 ## Getting Started
 
@@ -26,3 +32,12 @@ pnpm install
 ```shell
 pnpm dev
 ```
+
+## Template Structure
+
+- **Simple Landing Page**: Clean welcome screen with wallet connection
+- **Minimal Dependencies**: Only essential packages for Solana integration
+- **LLM-Friendly**: Clear, simple structure that's easy to build upon
+- **Wallet Integration**: Built-in wallet connection using Wallet UI
+- **Theme Support**: Dark/Light mode toggle
+- **Responsive Design**: Mobile-friendly Tailwind CSS styling
