@@ -1,33 +1,38 @@
-import { AppHero } from '@/components/app-hero'
-
-const links: { label: string; href: string }[] = [
-  { label: 'Solana Docs', href: 'https://docs.solana.com/' },
-  { label: 'Solana Faucet', href: 'https://faucet.solana.com/' },
-  { label: 'Solana Cookbook', href: 'https://solana.com/developers/cookbook/' },
-  { label: 'Solana Stack Overflow', href: 'https://solana.stackexchange.com/' },
-  { label: 'Solana Developers GitHub', href: 'https://github.com/solana-developers/' },
-]
+import { ClusterButton, WalletButton } from '@/components/solana/solana-provider.tsx'
+import { ThemeSelect } from '@/components/theme-select'
+import { useWalletUi } from '@wallet-ui/react'
 
 export default function DashboardFeature() {
+  const { account } = useWalletUi()
+
   return (
-    <div>
-      <AppHero title="gm" subtitle="Say hi to your new Solana app." />
-      <div className="max-w-xl mx-auto py-6 sm:px-6 lg:px-8 text-center">
-        <div className="space-y-2">
-          <p>Here are some helpful links to get you started.</p>
-          {links.map((link, index) => (
-            <div key={index}>
-              <a
-                href={link.href}
-                className="hover:text-gray-500 dark:hover:text-gray-300"
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                {link.label}
-              </a>
-            </div>
-          ))}
+    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 dark:from-gray-900 dark:to-gray-800">
+      <div className="absolute top-4 right-4 z-10">
+        <ThemeSelect />
+      </div>
+
+      <div className="flex flex-col items-center justify-center min-h-screen p-8">
+        <div className="text-center mb-12">
+          <h1 className="text-6xl font-bold mb-6 bg-gradient-to-r from-blue-600 to-indigo-600 bg-clip-text text-transparent">
+            Welcome to Solana
+          </h1>
+          <p className="text-xl text-gray-600 dark:text-gray-300 max-w-md mx-auto">
+            Get started by connecting your wallet
+          </p>
         </div>
+
+        <div className="flex flex-col items-center gap-4 mb-8">
+          <WalletButton />
+          <ClusterButton />
+        </div>
+
+        {account && (
+          <div className="text-center">
+            <p className="text-gray-600 dark:text-gray-400 text-sm">
+              Connected to {account.address.toString().slice(0, 8)}...{account.address.toString().slice(-4)}
+            </p>
+          </div>
+        )}
       </div>
     </div>
   )

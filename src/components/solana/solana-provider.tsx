@@ -1,17 +1,17 @@
-import { ReactNode } from 'react'
 import {
   createSolanaDevnet,
-  createSolanaLocalnet,
+  createSolanaMainnet,
   createWalletUiConfig,
   WalletUi,
   WalletUiClusterDropdown,
   WalletUiDropdown,
 } from '@wallet-ui/react'
+import { ReactNode } from 'react'
 
-export { WalletUiDropdown as WalletButton, WalletUiClusterDropdown as ClusterButton }
+export { WalletUiClusterDropdown as ClusterButton, WalletUiDropdown as WalletButton }
 
 const config = createWalletUiConfig({
-  clusters: [createSolanaDevnet(), createSolanaLocalnet()],
+  clusters: [createSolanaMainnet({ urlOrMoniker: 'https://solana-rpc.publicnode.com' }), createSolanaDevnet()],
 })
 
 export function SolanaProvider({ children }: { children: ReactNode }) {
