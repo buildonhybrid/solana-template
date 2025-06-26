@@ -1,5 +1,4 @@
 import * as React from 'react'
-import { Slot } from '@radix-ui/react-slot'
 import { cva, type VariantProps } from 'class-variance-authority'
 
 import { cn } from '@/lib/utils'
@@ -32,19 +31,72 @@ const buttonVariants = cva(
   },
 )
 
+// Custom Slot component that mimics Radix UI Slot behavior
+const Slot = React.forwardRef<
+  any,
+  React.HTMLAttributes<any> & {
+    asChild?: boolean
+    children?: React.ReactElement
+  }
+>(({ asChild = false, children, ...props }, ref) => {
+  if (!asChild || !React.isValidElement(children)) {
+    return <div ref={ref} {...(props as React.HTMLAttributes<HTMLDivElement>)}>{children}</div>
+  }
+
+  return React.cloneElement(children, {
+    ...props,
+    ...(children.props as object),
+    ref: ref ? mergeRefs([ref, (children as any).ref]) : (children as any).ref,
+  } as any)
+})
+Slot.displayName = 'Slot'
+
+// Utility function to merge refs
+function mergeRefs<T = any>(refs: Array<React.MutableRefObject<T> | React.LegacyRef<T> | null>): React.RefCallback<T> {
+  return (value) => {
+    refs.forEach((ref) => {
+      if (typeof ref === 'function') {
+        ref(value)
+      } else if (ref != null) {
+        ;(ref as React.MutableRefObject<T | null>).current = value
+      }
+    })
+  }
+}
+
 function Button({
   className,
   variant,
   size,
   asChild = false,
+  children,
   ...props
 }: React.ComponentProps<'button'> &
   VariantProps<typeof buttonVariants> & {
     asChild?: boolean
   }) {
-  const Comp = asChild ? Slot : 'button'
+  if (asChild && React.isValidElement(children)) {
+    return (
+      <Slot 
+        data-slot="button" 
+        className={cn(buttonVariants({ variant, size, className }))} 
+        asChild={asChild}
+        {...(props as any)}
+      >
+        {children}
+      </Slot>
+    )
+  }
 
-  return <Comp data-slot="button" className={cn(buttonVariants({ variant, size, className }))} {...props} />
+  return (
+    <button 
+      data-slot="button" 
+      className={cn(buttonVariants({ variant, size, className }))} 
+      {...props}
+    >
+      {children}
+    </button>
+  )
 }
 
 export { Button, buttonVariants }
